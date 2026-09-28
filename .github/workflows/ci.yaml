@@ -27,6 +27,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'poetry'
       
       - name: Run script validation
         run: python validate_env.py
@@ -37,9 +38,15 @@ jobs:
       - name: Analyse Notebooks
         run: |
           nbstripout --verify explorer.ipynb || (echo "ERRO: Notebook com outputs, limpe antes de commitar" && exit code 1)
-          
+
       - name: Install Ruff (Linter)
         run: pip install ruff   
 
       - name: Run Linter
         run: ruff check .
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies - Poetry
+        run: poetry install   
