@@ -3,23 +3,8 @@ name: Pipeline de treinamento ML
 on:
   push:
     branches:
-      - main
-    # paths:
-    #   - 'src/models/**'
-    #   - 'scripts/**'
-    #   - 'pyproject.toml'
-    #   - 'poetry.lock'
-  # push:
-  #   branches:
-  #     - main
-  #   paths-ignore:
-  #     - 'backend/**'
-  #     - 'frontend/**'
-  #     - 'k8s/**'
-#   repository_dispatch:
-#     types:
-#       - anomalia-detectada-retreinar
-
+        - main
+        
 env:
   PYTHON_VERSION: '3.10'
 
@@ -43,7 +28,7 @@ jobs:
         run: poetry install
 
       - name: Rodar ETL (preparar-dados)
-        run: poetry run python src/models/preparar-dados.py
+        run: poetry run python preparar-dados.py
 
       - name: Salvar dataset como artefato
         uses: actions/upload-artifact@v7
