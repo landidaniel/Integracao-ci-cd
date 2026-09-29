@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def main():
     print("Extraindo e processando dados brutos....")
     # Simulando a criação de um dataset processado
