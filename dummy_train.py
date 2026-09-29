@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 import sys
 
+
 def main():
     print("Iniciando Dummy Training (Treinamento de Sanidade)...")
     
