@@ -43,7 +43,7 @@ jobs:
         run: poetry install
 
       - name: Rodar ETL (preparar-dados)
-        run: poetry run python src/models/preparar-dados.py
+        run: poetry run python preparar-dados.py
 
       - name: Salvar dataset como artefato
         uses: actions/upload-artifact@v7
