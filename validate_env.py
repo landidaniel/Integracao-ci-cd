@@ -1,5 +1,6 @@
 import sys
 
+
 def main():
     print("Iniciando a validação de ambiente para MLOps...")
     
