@@ -1,5 +1,7 @@
-import pandas as pd
 import os
+
+import pandas as pd
+
 
 def test_schema_dados_processados():
     # O teste espera que o preparar_dados.py já tenha rodado no pipeline
