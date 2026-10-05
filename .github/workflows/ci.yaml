@@ -3,9 +3,6 @@ name: CI - MLOps
 
 # conditions
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
@@ -40,7 +37,7 @@ jobs:
 
       - name: Analyse Notebooks
         run: |
-          nbstripout --verify explorer.ipynb || (echo "ERRO: Notebook com outputs, limpe antes de commitar" && exit code 1)
+          nbstripout --verify explorer.ipynb || (echo "ERRO: Notebook com outputs, limpe antes de commitar" && exit 1)
 
       - name: Install Ruff (Linter)
         run: pip install ruff   
@@ -50,3 +47,14 @@ jobs:
 
       - name: Install dependencies - Poetry
         run: poetry install
+
+      - name: Rodar ETL (preparar-dados)
+        run: poetry run python preparar-dados.py
+
+      - name: Dummy Training - Poetry
+        run: poetry run python dummy_train.py
+
+      - name: Dummy Training Governance - Poetry
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: poetry run python dummy_train_governance.py
