@@ -25,10 +25,7 @@ def main():
         sys.exit(0)
 
     except (FileNotFoundError, KeyError, ValueError, OSError) as error:
-        print(
-            "ERRO DE COMPUTAÇÃO: "
-            f"O código do modelo falhou. Detalhes: {error}"
-        )
+        print("ERRO DE COMPUTAÇÃO: " f"O código do modelo falhou. Detalhes: {error}")
         sys.exit(1)
 
 
