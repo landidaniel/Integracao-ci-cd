@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io # Github Container Registry
-  IMAGE_NAME: landidaniel/Integracao-ci-cd
+  IMAGE_NAME: landidaniel/integracao-ci-cd
 
 jobs:
   build-and-push:
