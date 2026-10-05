@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io # Github Container Registry
-  IMAGE_NAME: landidaniel/integracao-ci-cd
+  IMAGE_NAME: landidaniel/Integracao-ci-cd
 
 jobs:
   build-and-push:
@@ -17,6 +17,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
 
     steps:
       - name: Checkout
@@ -36,3 +37,15 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Configure AWS Credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v6.1.0
+        with:
+          audience: sts.amazonaws.com
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::434352151503:role/OIDCGithubActionsRole
+      
+      - name: Validar identidade (AWS <> OIDC)
+        run: |
+          echo "Testando conexão com a AWS.."
+          aws sts get-caller-identity
