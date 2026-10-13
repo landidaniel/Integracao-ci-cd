@@ -1,0 +1,15 @@
+name: CI Workflow call
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci-workflow-call:
+    uses: landidaniel/Integracao-ci-cd-devops/.github/workflows/ci-template.yml@main
+    with:
+      versao-python: '3.10'
+      path-tests: "tests/"
+    secrets:
+      TOKEN_NUVEM: ${{ secrets.TOKEN_NUVEM }}
