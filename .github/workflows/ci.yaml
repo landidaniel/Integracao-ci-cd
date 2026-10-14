@@ -58,3 +58,15 @@ jobs:
         env:
           GITHUB_SHA: ${{ github.sha }}
         run: poetry run python dummy_train_governance.py
+
+      - name: Tests (PyTest)
+        run: poetry run python -m pytest tests/ -v
+
+      - name: Treinar modelo (pkl)
+        run: python train.py
+
+      - name: Rodar auditoria MLOps
+        uses: landidaniel/Integracao-ci-cd-devops@main
+        with:
+          path-model: 'outputs/modelo_fraude.pkl'
+          nivel_alerta: 'WARNING'
