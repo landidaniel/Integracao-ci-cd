@@ -1,4 +1,3 @@
-import os
 
 def gerar_relatorio_luta():
     # Na vida real, carregaríamos o modelo da produção (V1) e o recém-treinado (V2) 
