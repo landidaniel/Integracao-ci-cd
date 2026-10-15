@@ -5,27 +5,44 @@ on:
     branches:
       - main
     paths:
-      - 'src/models/**'
-      - 'scripts/**'
-      - 'pyproject.toml'
-      - 'poetry.lock'
+      - "src/models/**"
+      - "scripts/**"
+      - "pyproject.toml"
+      - "poetry.lock"
+
   # push:
   #   branches:
   #     - main
   #   paths-ignore:
-  #     - 'backend/**'
-  #     - 'frontend/**'
-  #     - 'k8s/**'
-  # repository_dispatch:
-  #   types:
-  #     - anomalia-detectada-retreinar
+  #     - "backend/**"
+  #     - "frontend/**"
+  #     - "k8s/**"
+
+  repository_dispatch:
+    types:
+      - anomalia-detectada-retreinar
 
 env:
-  PYTHON_VERSION: '3.10'
+  PYTHON_VERSION: "3.10"
 
 jobs:
-  preparando-dados:
+  anomalia-detect:
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Recebendo o payload do Webhook
+        run: |
+          echo "Evento recebido de fora do Github!"
+          echo "Motivo do disparo: ${{ github.event.client_payload.motivo }}"
+          echo "Acurácia atual reportada: ${{ github.event.client_payload.acuracia }}"
+
+      - name: Iniciar Retreinamento
+        run: echo "Iniciando download dos dados novos e acionando instancias com GPU"
+
+  preparando-dados:
+    needs: anomalia-detect
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -37,8 +54,8 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'poetry'
-      
+          cache: "poetry"
+
       - name: Install dependencies - Poetry
         run: poetry install
 
@@ -50,9 +67,11 @@ jobs:
         with:
           name: dataset
           path: dataset_processado.csv
+
   treinamento:
     needs: preparando-dados
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -69,24 +88,24 @@ jobs:
           echo "Lendo as primeiras linhas do CSV chamado dataset:"
           cat dataset_processado.csv
 
-    #   - name: Executar a batalha (Champion vs Challenger)
-    #     run: python scripts/avaliar_desafiante.py
+      # - name: Executar a batalha (Champion vs Challenger)
+      #   run: python scripts/avaliar_desafiante.py
 
-    #   - name: Ler o relatório markdown
-    #     id: relatorio
-    #     run: |
-    #       conteudo=$(cat relatorio_pr.md)
-    #       echo "BODY_PR<<EOF" >> $GITHUB_ENV
-    #       echo "$conteudo" >> $GITHUB_ENV
-    #       echo "EOF" >> $GITHUB_ENV
+      # - name: Ler o relatório markdown
+      #   id: relatorio
+      #   run: |
+      #     conteudo=$(cat relatorio_pr.md)
+      #     echo "BODY_PR<<EOF" >> $GITHUB_ENV
+      #     echo "$conteudo" >> $GITHUB_ENV
+      #     echo "EOF" >> $GITHUB_ENV
 
-    #   - name: Criar pull request automático
-    #     uses: peter-evans/create-pull-request@v8
-    #     with:
-    #       token: ${{ secrets.GITHUB_TOKEN }}
-    #       commit-message: "[BOT] Novo modelo treinado - Atualização de Arquitetura"
-    #       title: "[BOT] Atualização do modelo de fraude (Challenger venceu)"
-    #       body: ${{ env.BODY_PR }}
-    #       branch: "bot-pr-model"
-    #       base: "main"
-    #       labels: "mlops, machine-learning, automated-pr"
+      # - name: Criar pull request automático
+      #   uses: peter-evans/create-pull-request@v8
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     commit-message: "[BOT] Novo modelo treinado - Atualização de Arquitetura"
+      #     title: "[BOT] Atualização do modelo de fraude (Challenger venceu)"
+      #     body: ${{ env.BODY_PR }}
+      #     branch: "bot-pr-model"
+      #     base: "main"
+      #     labels: "mlops, machine-learning, automated-pr"
