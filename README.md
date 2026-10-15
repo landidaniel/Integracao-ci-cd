@@ -50,25 +50,24 @@ O objetivo foi aplicar conceitos de CI/CD e MLOps em um projeto de Machine Learn
 
 ## Estrutura do projeto
 
-```text
-.github/workflows/
-├── ci.yaml
-├── ci-workflow-call.yaml
-├── cd.yaml
-├── ml-pipeline.yaml
-└── monitoramento-diario.yaml
+    .github/workflows/
+    ├── ci.yaml
+    ├── ci-workflow-call.yaml
+    ├── cd.yaml
+    ├── ml-pipeline.yaml
+    └── monitoramento-diario.yaml
 
-k8s/
-scripts/
-src/models/
-tests/
-api.py
-Dockerfile
-pyproject.toml
-poetry.lock
-
+    k8s/
+    scripts/
+    src/models/
+    tests/
+    api.py
+    Dockerfile
+    pyproject.toml
+    poetry.lock
 
 ## Observação
 
 Este projeto foi desenvolvido para fins educacionais como parte das aulas de Integração com CI/CD da Pós-Tech em Machine Learning Engineering da FIAP.
+
 Algumas etapas de infraestrutura e deploy são simuladas para demonstrar o funcionamento do fluxo de MLOps.
